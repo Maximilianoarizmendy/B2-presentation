@@ -21,6 +21,13 @@ h1{font-size:clamp(2.6rem,9.4vw,10.8rem)}
 ul{list-style:none;margin:0;padding:0;justify-self:end;width:min(100%,30rem)}
 li{border-top:1px solid rgba(255,244,239,.55);padding:.5em 0 .42em;font-weight:500;font-size:clamp(1.1rem,2.3vw,2.2rem);line-height:1;opacity:0;transform:translateX(34px);animation:in .6s forwards;animation-delay:calc(.8s + var(--i)*90ms)}
 li b{display:block;font-weight:900;font-size:2.7em;line-height:.9}
+body.vid #scrim{background:rgba(var(--k),.66)}
+.vd{height:100%;display:grid;place-items:center}
+.fr{pointer-events:auto;width:min(100%,calc((100vh - 150px)*16/9));aspect-ratio:16/9;border:2px solid var(--w);box-shadow:16px 16px 0 rgb(var(--k));background:#000;animation:pop .8s cubic-bezier(.2,.8,.2,1) .3s both}
+.fr iframe{width:100%;height:100%;border:0;display:block}
+.nv{position:fixed;top:50%;transform:translateY(-50%);pointer-events:auto;background:rgba(var(--k),.6);color:var(--w);border:1px solid var(--w);font:900 2rem/1 var(--f);width:52px;height:52px;cursor:pointer}
+.nv.p{left:clamp(8px,2vw,28px)}.nv.n{right:clamp(8px,2vw,28px)}
+@keyframes pop{from{opacity:0;transform:translateY(40px) scale(.96)}}
 @keyframes up{to{transform:none}}
 @keyframes in{to{opacity:1;transform:none}}
 #cnt{position:fixed;top:calc(14px + env(safe-area-inset-top,0px));right:clamp(16px,3vw,40px);font-weight:900;font-size:1.2rem;letter-spacing:.06em}
@@ -33,27 +40,40 @@ li b{display:block;font-weight:900;font-size:2.7em;line-height:.9}
 <canvas id="gl"></canvas><canvas id="fx"></canvas><div id="scrim"></div>
 <div id="bar"></div><div id="hint">← → or swipe · F fullscreen</div><div id="cnt"></div><main id="ui"></main>
 <script>
-const IM=["images/montana.jpg", "images/atacama.jpg", "images/fabrica.jpg", "images/ropa.jpg"];
+const IM=["images/montana.jpg", "images/atacama.jpg", "images/fabrica.jpg", "images/ropa.jpg", "images/marcas.jpg", "images/costurera.jpg", "images/compras.jpg"];
 // i=image, z=[zoom,cx,cy]
+const VIDEO='wmSiXKxQw30'; // cambia solo este ID para usar otro video de YouTube
 const S=[
 {t:"Our ever-expanding consumerism has killed the earth",i:0,z:[1,.5,.5]},
-{h:"What are we really buying?",k:["Consumerism","Shopping habits","TikTok trends","Unused clothes","Hidden costs"],i:0,z:[1.7,.5,.62]},
+{h:"What are we really buying?",k:["Consumerism","Shopping habits","TikTok trends","Unused clothes","Hidden costs"],i:6,z:[1,.5,.5]},
 {h:"The business behind the trends",k:["Cheap clothes","Mass production","Fast trends","SHEIN","Overproduction","Short-lived fashion"],i:2,z:[1,.5,.5]},
-{h:"The people behind our clothes",k:["Factory workers","Low wages","Long hours","Unsafe conditions","Child labour","SHEIN: 2 cases (2024)"],i:2,z:[1.8,.38,.62]},
+{h:"The people behind our clothes",k:["Factory workers","Low wages","Long hours","Unsafe conditions","Child labour","SHEIN: 2 cases (2024)"],i:5,z:[1,.5,.5]},
 {h:"The planet pays the price",k:["Water consumption","<b>7,500</b> litres – Jeans","Chemical pollution","Energy use","CO₂ emissions","Textile waste","AI vs. Fashion"],i:3,z:[1,.5,.5]},
 {h:"A mountain of clothes",k:["Chile","Second-hand clothes","Textile mountains","Unwanted clothing","Burning waste","Environmental damage"],i:1,z:[1,.5,.5]},
-{h:"Who is really responsible?",k:["Affordable clothing","Expensive ≠ ethical","Consumer choices","Company responsibility","Overproduction","Government regulations"],i:3,z:[1.6,.68,.62]},
-{h:"Small actions, big changes",k:["Think twice","Reuse","Repair","Donate","Second-hand shopping","Responsible companies"],i:1,z:[1.7,.78,.25]},
+{v:VIDEO,i:0,z:[2.2,.5,.5]},
+{h:"Who is really responsible?",k:["Affordable clothing","Expensive ≠ ethical","Consumer choices","Company responsibility","Overproduction","Government regulations"],i:4,z:[1,.5,.5]},
+{h:"Small actions, big changes",k:["Think twice","Reuse","Repair","Donate","Second-hand shopping","Responsible companies"],i:3,z:[1.7,.7,.66]},
 {h:"The future is in our hands",k:["People","Planet","Responsibility","Less waste","Better choices","Think before buying"],i:0,z:[1,.5,.5]}
 ];
 // per image: mode, y0, amp, flicker, hole[x,y,rx,ry]
-const P=[{m:0,y:0,a:1,f:0,h:[.503,.87,.025,.11]},{m:1,y:.3,a:1,f:0,h:[.72,.19,.09,.09]},{m:1,y:.62,a:.5,f:1,h:[0,0,.001,.001]},{m:1,y:.4,a:1,f:0,h:[.7,.68,.13,.22]}];
+const D={fit:0,pc:.5,e1:[0,0,.001,.001],e2:[0,0,.001,.001]};
+const P=[
+{m:0,y:0,a:1,f:0,h:[.503,.87,.025,.11]},
+{m:1,y:.3,a:1,f:0,h:[.72,.19,.09,.09]},
+{m:1,y:.62,a:.5,f:1,h:[0,0,.001,.001]},
+{m:1,y:.4,a:1,f:0,h:[.7,.68,.13,.22]},
+{m:2,y:0,a:1.3,f:0,h:[0,0,.001,.001],fit:1,pc:.68,e1:[.43,.36,.15,.17],e2:[.68,.53,.1,.1]},
+{m:2,y:0,a:.9,f:0,h:[0,0,.001,.001],fit:1,pc:.7,e1:[.6,.78,.1,.17],e2:[.2,.4,.09,.15]},
+{m:1,y:.58,a:1,f:0,h:[.5,.5,.1,.14],fit:1,pc:.7}
+].map(o=>({...D,...o}));
 const ui=document.getElementById('ui'),cnt=document.getElementById('cnt'),bar=document.getElementById('bar');
 const words=t=>t.split(' ').map((w,j)=>`<span class="w"><i style="--j:${j}">${w}</i></span>`).join(' ');
 const pad=n=>String(n).padStart(2,'0');
 let idx=0,tr=null;
-function render(){const d=S[idx];
- ui.innerHTML=d.t?`<section class="cv"><h1>${words(d.t)}</h1></section>`:`<section><h2>${words(d.h)}</h2><ul>${d.k.map((x,i)=>`<li style="--i:${i}">${x}</li>`).join('')}</ul></section>`;
+const vid=id=>`<section class="vd"><div class="fr"><iframe src="https://www.youtube-nocookie.com/embed/${id}?autoplay=1&rel=0&playsinline=1" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen title="Video"></iframe></div></section><button class="nv p" aria-label="Previous">‹</button><button class="nv n" aria-label="Next">›</button>`;
+ui.addEventListener('click',e=>{const b=e.target.closest('.nv');if(b){e.stopPropagation();go(idx+(b.classList.contains('n')?1:-1));}else if(e.target.closest('.fr'))e.stopPropagation();});
+function render(){const d=S[idx];document.body.classList.toggle('vid',!!d.v);
+ ui.innerHTML=d.v?vid(d.v):d.t?`<section class="cv"><h1>${words(d.t)}</h1></section>`:`<section><h2>${words(d.h)}</h2><ul>${d.k.map((x,i)=>`<li style="--i:${i}">${x}</li>`).join('')}</ul></section>`;
  cnt.textContent=pad(idx+1)+' / '+pad(S.length);bar.style.width=(idx/(S.length-1)*100)+'%';}
 function go(n){n=Math.max(0,Math.min(S.length-1,n));if(n===idx||tr)return;tr={t0:performance.now(),n,sw:0};ui.classList.add('out');}
 addEventListener('keydown',e=>{if(['ArrowRight',' ','PageDown','Enter'].includes(e.key))go(idx+1);else if(['ArrowLeft','PageUp','Backspace'].includes(e.key))go(idx-1);else if(e.key=='Home')go(0);else if(e.key=='End')go(S.length-1);else if(e.key=='f')document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen&&document.documentElement.requestFullscreen();});
@@ -63,18 +83,21 @@ addEventListener('touchend',e=>{const d=e.changedTouches[0].clientX-sx;if(Math.a
 const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
 const VS=`attribute vec2 p;varying vec2 sc;void main(){sc=vec2(p.x*.5+.5,.5-p.y*.5);gl_Position=vec4(p,0.,1.);}`;
 const FS=`precision highp float;varying vec2 sc;
-uniform sampler2D uTex;uniform float uT,uA,uMode,uY0,uAmp,uFl,uGl;uniform vec2 uRes;uniform vec3 uZ;uniform vec4 uH;
+uniform sampler2D uTex;uniform float uT,uA,uMode,uY0,uAmp,uFl,uGl,uFit,uPc;uniform vec2 uRes;uniform vec3 uZ;uniform vec4 uH,uE1,uE2;
 float h(vec2 p){return fract(sin(dot(p,vec2(127.1,311.7)))*43758.5453);}
 float n(vec2 p){vec2 i=floor(p),f=fract(p);f=f*f*(3.-2.*f);return mix(mix(h(i),h(i+vec2(1,0)),f.x),mix(h(i+vec2(0,1)),h(i+vec2(1,1)),f.x),f.y);}
 float fbm(vec2 p){float v=0.,a=.5;for(int i=0;i<3;i++){v+=a*n(p);p*=2.03;a*=.5;}return v/.875;}
 void main(){
- float ra=uRes.x/uRes.y;vec2 s=vec2(1.);if(ra>uA)s.y=uA/ra;else s.x=ra/uA;
- vec2 uv=(sc-.5)*s+.5;
+ float ra=uRes.x/uRes.y;vec2 s=vec2(1.);vec2 uv;
+ if(uFit>.5&&ra>uA){s.x=ra/uA;uv=vec2((sc.x-uPc)*s.x+.5,sc.y);}
+ else{if(ra>uA)s.y=uA/ra;else s.x=ra/uA;uv=(sc-.5)*s+.5;}
+ float ob=(uFit>.5&&ra>uA)?step(.5,abs(uv.x-.5)):0.;
  float z=uZ.x*(1.+.02*sin(uT*.2));uv=(uv-uZ.yz)/z+uZ.yz;
  uv.x+=(h(vec2(floor(uv.y*26.),floor(uT*20.)))-.5)*uGl*.12;
  float m;
  if(uMode<.5){vec2 pp=(uv-vec2(.5,.76))/vec2(.36,.40);m=1.-smoothstep(.55,1.05,length(pp));m=max(m,smoothstep(.80,.93,uv.y)*.85);}
- else m=smoothstep(uY0,uY0+.2,uv.y);
+ else if(uMode<1.5)m=smoothstep(uY0,uY0+.2,uv.y);
+ else m=max(1.-smoothstep(.5,1.,length((uv-uE1.xy)/uE1.zw)),1.-smoothstep(.5,1.,length((uv-uE2.xy)/uE2.zw)));
  m*=1.-.92*(1.-smoothstep(.6,1.2,length((uv-uH.xy)/uH.zw)));
  float t=uT;float gust=.7+.3*sin(t*.55+uv.x*2.5)+.2*sin(t*1.3);
  vec2 q=uv*vec2(8.,11.);
@@ -82,7 +105,7 @@ void main(){
  vec2 d=vec2(n1-.5,(n2-.5)*.55)*.032*gust*m*uAmp;
  d.x+=sin(uv.y*60.+t*3.+n1*6.)*.0013*m*gust*uAmp;
  d.x+=(fbm(uv*vec2(3.,6.)+vec2(-t*.15,0.))-.5)*.004*(1.-m)*(1.-smoothstep(.5,.68,uv.y))*(1.-uFl);
- vec3 c=texture2D(uTex,clamp(uv+d,0.,1.)).rgb;
+ vec2 us=uv+d;if(uFit>.5)us.x=1.-abs(mod(us.x,2.)-1.);vec3 c=texture2D(uTex,clamp(us,0.,1.)).rgb;c*=1.-.45*ob;
  c*=1.+(n1-.5)*.4*m;
  c*=1.+uFl*step(uv.y,.16)*.35*(h(vec2(floor(t*9.),floor(uv.x*8.)))-.5);
  c*=1.-uGl*.4;
@@ -111,7 +134,7 @@ Promise.all(IM.map(u=>new Promise(r=>{const i=new Image();i.onload=()=>r(i);i.sr
   const d=S[idx],q=P[d.i];
   g.bindTexture(g.TEXTURE_2D,tex[d.i]);
   g.uniform1f(U('uT'),t);g.uniform1f(U('uA'),imgs[d.i].width/imgs[d.i].height);g.uniform1f(U('uMode'),q.m);g.uniform1f(U('uY0'),q.y);
-  g.uniform1f(U('uAmp'),q.a);g.uniform1f(U('uFl'),q.f);g.uniform1f(U('uGl'),gG);g.uniform3f(U('uZ'),d.z[0],d.z[1],d.z[2]);g.uniform4f(U('uH'),q.h[0],q.h[1],q.h[2],q.h[3]);
+  g.uniform1f(U('uAmp'),q.a);g.uniform1f(U('uFl'),q.f);g.uniform1f(U('uGl'),gG);g.uniform3f(U('uZ'),d.z[0],d.z[1],d.z[2]);g.uniform4f(U('uH'),q.h[0],q.h[1],q.h[2],q.h[3]);g.uniform1f(U('uFit'),q.fit);g.uniform1f(U('uPc'),q.pc);g.uniform4f(U('uE1'),q.e1[0],q.e1[1],q.e1[2],q.e1[3]);g.uniform4f(U('uE2'),q.e2[0],q.e2[1],q.e2[2],q.e2[3]);
   g.drawArrays(g.TRIANGLE_STRIP,0,4);
   ctx.clearRect(0,0,W,H);const gu=.8+.4*Math.sin(t*.55);
   for(const f of fl){f.x+=f.v*gu*dt;f.p+=dt;f.r+=dt*(1+f.v*8);if(f.x>1.05){f.x=-.05;f.y=.2+Math.random()*.75;}

@@ -4,7 +4,7 @@ Presentación web (HTML + WebGL, sin dependencias). Navegación: flechas / espac
 
 ## Estructura
 - `index.html` – toda la presentación (HTML, CSS y JS)
-- `images/` – las 4 imágenes de fondo
+- `images/` – las 7 imágenes de fondo
 
 ## Probar en local
 Las imágenes se cargan como texturas WebGL, así que **no funciona abriendo el archivo con doble clic** (`file://`). Usa un servidor local:
