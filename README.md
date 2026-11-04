@@ -4,7 +4,7 @@ Presentación web (HTML + WebGL, sin dependencias). Navegación: flechas / espac
 
 ## Estructura
 - `index.html` – toda la presentación (HTML, CSS y JS)
-- `images/` – las 7 imágenes de fondo
+- `images/` – `montana.jpg` es el fondo animado; las demás van encima en cada slide
 
 ## Probar en local
 Las imágenes se cargan como texturas WebGL, así que **no funciona abriendo el archivo con doble clic** (`file://`). Usa un servidor local:

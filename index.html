@@ -2,144 +2,301 @@
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Our Ever-Expanding Consumerism Has Killed the Earth</title>
-<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@500;900&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant:wght@600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
 <style>
-:root{--w:#fff4ef;--k:18,4,10;--f:'Big Shoulders Display','Arial Narrow',Impact,sans-serif}
-html,body{margin:0;height:100%;background:#c8173d;overflow:hidden;font-family:var(--f);color:var(--w);-webkit-user-select:none;user-select:none}
+:root{--r:#ff2350;--ra:#ff5b7c;--k:8,8,12;--w:#f4f1f2;--ser:'Cormorant','Cormorant Garamond',Georgia,serif;--sans:'Space Grotesk',system-ui,-apple-system,'Segoe UI',sans-serif;
+--halo:0 2px 2px rgba(8,8,12,.55),0 0 12px rgba(8,8,12,.95),0 0 30px rgba(8,8,12,.85),0 0 64px rgba(8,8,12,.6)}
+html,body{margin:0;height:100%;background:#c8173d;overflow:hidden;font-family:var(--sans);color:var(--w);-webkit-user-select:none;user-select:none}
 canvas{position:fixed;inset:0;width:100%;height:100%}
 #fx,#scrim{pointer-events:none}
-#scrim{position:fixed;inset:0;background:linear-gradient(0deg,rgba(var(--k),.82),rgba(var(--k),.12) 58%,transparent),linear-gradient(90deg,rgba(var(--k),.4),transparent 62%)}
-#ui{position:fixed;inset:0;display:flex;align-items:flex-end;padding:clamp(20px,4vw,64px);padding-bottom:calc(clamp(20px,4vw,64px) + env(safe-area-inset-bottom,0px));pointer-events:none;transition:opacity .25s}
+#scrim{position:fixed;inset:0;background:radial-gradient(ellipse at 50% 45%,rgba(var(--k),.5),rgba(var(--k),.82) 85%)}
+body.vid #scrim{background:rgba(var(--k),.7)}
+.top,.bot{position:fixed;left:0;right:0;display:flex;align-items:center;justify-content:space-between;padding:0 clamp(14px,2vw,36px);background:rgba(var(--k),.55);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);z-index:5}
+.top{top:0;height:56px;border-bottom:1px solid rgba(255,255,255,.07)}
+.bot{bottom:0;height:72px;border-top:1px solid rgba(255,255,255,.07)}
+.tp{font-weight:600;font-size:.85rem;letter-spacing:.2em;color:#aeb0bd;display:flex;align-items:center;gap:10px}
+.tp:before{content:"";width:8px;height:8px;border-radius:50%;background:var(--r)}
+.rt,.lf{display:flex;align-items:center;gap:12px}
+.ib{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.12);color:#cfd0da;border-radius:8px;width:40px;height:34px;cursor:pointer;display:grid;place-items:center}
+#cnt{font-weight:600;font-size:1rem;color:#7d7f8f}#cnt b{color:#fff}#cnt s{text-decoration:none;color:var(--r);margin:0 .35em}
+.btn{font:700 .8rem var(--sans);letter-spacing:.12em;text-transform:uppercase;padding:0 1.3em;height:42px;border-radius:8px;border:1px solid rgba(255,255,255,.14);background:rgba(18,19,26,.9);color:#fff;cursor:pointer}
+.btn.n{background:var(--r);border-color:var(--r)}.btn:disabled{opacity:.35;cursor:default}
+.trk{position:absolute;left:50%;transform:translateX(-50%);width:min(520px,34vw);height:4px;background:rgba(255,255,255,.12);border-radius:4px;overflow:hidden}
+#bar{height:100%;width:0;background:var(--r);transition:width .6s}
+.kh{font-size:.8rem;color:#7d7f8f;display:flex;align-items:center;gap:6px}
+kbd{font:inherit;font-size:.7rem;border:1px solid rgba(255,255,255,.18);border-radius:4px;padding:1px 5px;color:#aeb0bd}
+#ui{position:fixed;left:0;right:0;top:56px;bottom:72px;padding:0 clamp(20px,5vw,80px);display:flex;align-items:center;pointer-events:none;transition:opacity .25s}
 #ui.out{opacity:0}
-section{width:100%;display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);gap:4vw;align-items:end}
-section.cv{grid-template-columns:1fr}
-h1,h2{margin:0;font-weight:900;text-transform:uppercase;letter-spacing:-.01em;line-height:.86;text-wrap:balance}
-h2{font-size:clamp(2.8rem,8.4vw,9rem)}
-h1{font-size:clamp(2.6rem,9.4vw,10.8rem)}
-.w{display:inline-block;overflow:hidden;vertical-align:top;padding-bottom:.07em}
-.w i{display:inline-block;font-style:normal;transform:translateY(112%);animation:up .85s cubic-bezier(.2,.8,.2,1) forwards;animation-delay:calc(var(--j)*70ms + .35s)}
-ul{list-style:none;margin:0;padding:0;justify-self:end;width:min(100%,30rem)}
-li{border-top:1px solid rgba(255,244,239,.55);padding:.5em 0 .42em;font-weight:500;font-size:clamp(1.1rem,2.3vw,2.2rem);line-height:1;opacity:0;transform:translateX(34px);animation:in .6s forwards;animation-delay:calc(.8s + var(--i)*90ms)}
-li b{display:block;font-weight:900;font-size:2.7em;line-height:.9}
-body.vid #scrim{background:rgba(var(--k),.66)}
-.vd{height:100%;display:grid;place-items:center}
-.fr{pointer-events:auto;width:min(100%,calc((100vh - 150px)*16/9));aspect-ratio:16/9;border:2px solid var(--w);box-shadow:16px 16px 0 rgb(var(--k));background:#000;animation:pop .8s cubic-bezier(.2,.8,.2,1) .3s both}
+
+/* ===== LAYOUTS ===== */
+section{width:100%;display:grid;gap:clamp(28px,5vw,90px);align-items:center;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr)}
+section.solo{grid-template-columns:1fr}
+section.R{grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr)}
+section.R .cw{order:-1}
+section.vd{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:clamp(12px,1.8vw,24px);height:100%}
+.tx{display:flex;flex-direction:column;align-items:center;text-align:center;gap:clamp(14px,2vw,28px);width:100%}
+section.L .tx,section.R .tx{align-items:flex-start;text-align:left}
+section.L .chips,section.R .chips,section.L .stat,section.R .stat,section.L .flow,section.R .flow{justify-content:flex-start}
+
+/* ===== TIPOGRAFIA ===== */
+.eb{font-weight:700;font-size:clamp(.8rem,1.15vw,1.05rem);letter-spacing:.3em;text-transform:uppercase;color:#ff4d70;text-shadow:var(--halo);animation:fu .7s .15s both}
+.hd{margin:0;font-family:var(--ser);font-weight:700;text-transform:uppercase;letter-spacing:.01em;line-height:1;font-size:clamp(2.2rem,4.6vw,4.8rem);text-wrap:balance}
+.hd.cv{font-size:clamp(2.6rem,6.2vw,6.4rem)}
+.hd.vh{font-size:clamp(1.7rem,3.2vw,3rem)}
+/* jerarquia: las palabras no resaltadas se hacen mas chicas y las rojas mas grandes */
+.hd.big .w{vertical-align:baseline}
+.hd.big .w:not(.a){font-size:.76em;color:#ece7ea}
+.hd.big .w.a{font-size:1.32em}
+.w{display:inline-block;overflow:hidden;vertical-align:top;padding:.1em .06em .14em;margin:-.1em -.06em -.14em}
+.w i{display:inline-block;font-style:normal;transform:translateY(115%);animation:up .8s cubic-bezier(.2,.8,.2,1) forwards;animation-delay:calc(var(--j)*60ms + .3s)}
+.w i{text-shadow:none}
+.w{filter:drop-shadow(0 3px 10px rgba(8,8,12,.5))}
+.w.a{filter:drop-shadow(0 2px 1px rgba(8,8,12,.6)) drop-shadow(0 0 10px rgba(8,8,12,.95)) drop-shadow(0 0 26px rgba(8,8,12,.8))}
+.w.a i{color:var(--ra)}
+.ln{display:block;width:clamp(90px,10vw,160px);height:2px;background:linear-gradient(90deg,var(--r),transparent);animation:fu .7s .9s both}
+.sub{font-family:var(--ser);font-weight:600;text-transform:uppercase;letter-spacing:.2em;font-size:clamp(1.1rem,2.1vw,1.9rem);animation:fu .7s 1s both}
+.chips{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;max-width:52rem}
+section.solo .chips{max-width:62rem}
+.chip{font-weight:600;font-size:clamp(.72rem,.98vw,.95rem);letter-spacing:.14em;text-transform:uppercase;padding:.9em 1.6em;border-radius:999px;background:rgba(18,19,26,.92);border:1px solid rgba(255,255,255,.1);animation:pi .5s both;animation-delay:calc(1s + var(--i)*80ms)}
+.chip.r{border-color:rgba(255,35,80,.75);color:#ff9aae;background:rgba(255,35,80,.1);text-shadow:0 1px 4px rgba(8,8,12,.95),0 0 14px rgba(8,8,12,.85)}
+.stat{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:center;gap:.2em .7em;animation:fu .7s .9s both}
+.stat b{font-family:var(--ser);font-weight:700;font-size:clamp(4rem,9.5vw,8.5rem);line-height:.9;text-shadow:var(--halo)}
+.stat b.r{color:var(--ra)}
+.stat span{font-weight:700;font-size:clamp(.9rem,1.5vw,1.4rem);letter-spacing:.16em;text-transform:uppercase;color:var(--ra);text-shadow:var(--halo)}
+.flow{display:flex;align-items:center;justify-content:center;gap:clamp(10px,1.8vw,24px);flex-wrap:wrap;animation:fu .7s .9s both}
+.fb{border:1px solid rgba(255,255,255,.12);background:rgba(18,19,26,.92);border-radius:14px;padding:.9em 1.9em;text-align:center}
+.fb small{display:block;color:var(--ra);font-size:.78rem;letter-spacing:.12em;text-shadow:0 1px 4px rgba(8,8,12,.9)}
+.fb b{font-size:clamp(1.05rem,1.9vw,1.7rem);letter-spacing:.1em;text-transform:uppercase}
+.fb.l{border-color:var(--ra);background:rgba(255,35,80,.16)}
+.ar{color:var(--ra);font-size:1.9rem;text-shadow:var(--halo)}
+.vs{display:flex;align-items:center;justify-content:center;gap:clamp(16px,2.8vw,40px);animation:fu .7s .9s both}
+.vc{width:min(350px,38vw);padding:1.6rem 1.4rem 1.7rem;border-radius:16px;background:rgba(18,19,26,.92);border:1px solid rgba(255,255,255,.08);border-top:3px solid var(--c);display:flex;flex-direction:column;align-items:center;gap:1rem}
+.vc small{font-weight:700;font-size:.8rem;letter-spacing:.2em;color:var(--c)}
+.vc h3{margin:0;font-weight:700;font-size:clamp(1.1rem,1.7vw,1.5rem);letter-spacing:.06em;text-transform:uppercase;line-height:1.25}
+.vc em{font-style:normal;font-weight:700;font-size:.8rem;letter-spacing:.14em;padding:.7em 1.3em;border-radius:999px;border:1px solid var(--c);color:var(--c);background:rgba(255,255,255,.05)}
+.vv{color:var(--ra);font-weight:700;font-size:1.3rem;letter-spacing:.1em;text-shadow:var(--halo)}
+.cw{justify-self:center;animation:pop .85s cubic-bezier(.2,.8,.2,1) .35s both}
+.card{margin:0;line-height:0;border:1px solid rgba(255,244,239,.75);box-shadow:14px 14px 0 rgb(var(--k));background:#000;animation:bob 8s ease-in-out infinite}
+.card img{max-width:100%;max-height:calc(100vh - 210px);display:block}
+.fr{pointer-events:auto;width:min(100%,calc((100vh - 300px)*16/9));aspect-ratio:16/9;border:1px solid rgba(255,244,239,.75);box-shadow:14px 14px 0 rgb(var(--k));background:#000;animation:pop .8s cubic-bezier(.2,.8,.2,1) .3s both}
 .fr iframe{width:100%;height:100%;border:0;display:block}
-.nv{position:fixed;top:50%;transform:translateY(-50%);pointer-events:auto;background:rgba(var(--k),.6);color:var(--w);border:1px solid var(--w);font:900 2rem/1 var(--f);width:52px;height:52px;cursor:pointer}
-.nv.p{left:clamp(8px,2vw,28px)}.nv.n{right:clamp(8px,2vw,28px)}
-@keyframes pop{from{opacity:0;transform:translateY(40px) scale(.96)}}
 @keyframes up{to{transform:none}}
-@keyframes in{to{opacity:1;transform:none}}
-#cnt{position:fixed;top:calc(14px + env(safe-area-inset-top,0px));right:clamp(16px,3vw,40px);font-weight:900;font-size:1.2rem;letter-spacing:.06em}
-#bar{position:fixed;left:0;top:0;height:4px;background:var(--w);width:0;transition:width .6s}
-#hint{position:fixed;top:calc(14px + env(safe-area-inset-top,0px));left:clamp(16px,3vw,40px);font-weight:500;font-size:1rem;opacity:.85;animation:fade 1s 7s forwards}
-@keyframes fade{to{opacity:0}}
-@media(max-width:720px){section{grid-template-columns:1fr;gap:20px}ul{justify-self:stretch;width:100%}li{font-size:1.15rem}li b{font-size:2.2em}}
-@media(prefers-reduced-motion:reduce){.w i,li{animation-duration:.01s!important;animation-delay:0s!important}}
-</style></head><body>
-<canvas id="gl"></canvas><canvas id="fx"></canvas><div id="scrim"></div>
-<div id="bar"></div><div id="hint">← → or swipe · F fullscreen</div><div id="cnt"></div><main id="ui"></main>
+@keyframes fu{from{opacity:0;transform:translateY(14px)}}
+@keyframes pi{from{opacity:0;transform:scale(.85)}}
+@keyframes pop{from{opacity:0;transform:translateY(36px) scale(.96)}}
+@keyframes bob{50%{transform:translateY(-7px) rotate(-.25deg)}}
+@media(max-width:760px){.kh,.trk{display:none}.btn{height:38px;padding:0 1em}#ui{align-items:flex-start;padding-top:14px;overflow:auto}section,section.R{grid-template-columns:1fr;gap:20px}section.R .cw{order:-1}.cw{order:-1}.card img{max-height:30vh}.vs{flex-direction:column}.vc{width:100%}section.L .tx,section.R .tx{align-items:center;text-align:center}section.L .chips,section.R .chips,section.L .stat,section.R .stat{justify-content:center}.fr{width:100%}}
+@media(prefers-reduced-motion:reduce){.w i,.eb,.ln,.sub,.chip,.stat,.flow,.vs,.cw,.card{animation-duration:.01s!important;animation-delay:0s!important}}
+.sb{font:700 .78rem var(--sans);letter-spacing:.12em;text-transform:uppercase;padding:0 1.1em;height:34px;border-radius:8px;border:1px solid rgba(255,35,80,.75);background:rgba(255,35,80,.12);color:#ff9aae;cursor:pointer;display:flex;align-items:center;gap:8px}
+.sb:hover,.sb.on{background:var(--r);border-color:var(--r);color:#fff}
+#sp{position:fixed;top:56px;bottom:72px;right:0;width:min(480px,92vw);display:none;flex-direction:column;background:rgba(var(--k),.95);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);border-left:1px solid rgba(255,35,80,.45);z-index:6;-webkit-user-select:text;user-select:text}
+#sp.on{display:flex}
+body.spo #ui{right:min(480px,92vw);padding-right:clamp(16px,2vw,32px)}
+body.spo section{gap:clamp(20px,3vw,50px)}
+body.spo .hd{font-size:clamp(2rem,3.4vw,3.5rem)}
+body.spo .hd.cv{font-size:clamp(2.2rem,4.4vw,4.6rem)}
+body.spo .stat b{font-size:clamp(3.2rem,6vw,5.5rem)}
+body.spo .tx{gap:clamp(10px,1.4vw,20px)}
+body.spo .card img{max-height:calc(100vh - 240px)}
+@media(max-width:760px){body.spo #ui{right:0}}
+#sp .sh{display:flex;align-items:center;justify-content:space-between;padding:14px 22px;border-bottom:1px solid rgba(255,255,255,.08);font-weight:700;font-size:.75rem;letter-spacing:.2em;color:#aeb0bd}
+#sp .sh b{color:#ff4d70}
+#sp .sh button{background:none;border:1px solid rgba(255,255,255,.15);color:#cfd0da;border-radius:6px;width:30px;height:28px;cursor:pointer}
+#spb{overflow:auto;padding:8px 24px 28px}
+#spb h4{margin:1.4em 0 .6em;font-family:var(--ser);font-size:1.5rem;line-height:1.1;text-transform:uppercase;color:#ff5b7c}
+#spb p{margin:0 0 .7em;font-size:1.05rem;line-height:1.6;color:#ebe8ec}
+#spb .em{color:#7d7f8f;font-style:italic;margin-top:1.4em}
+@media(max-width:760px){.sb span{display:none}}
+</style>
+</head><body><canvas id="gl"></canvas><canvas id="fx"></canvas><div id="scrim"></div>
+<header class="top chrome"><div class="tp">TOPIC 38</div><div class="rt"><button class="sb" id="sbt" aria-label="Script"><svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 1.5h7l3 3v10H3z"/><path d="M5.5 8h5M5.5 11h5"/></svg><span>Script</span></button><button class="ib" id="fs" aria-label="Fullscreen"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 6V2h4M10 2h4v4M14 10v4h-4M6 14H2v-4"/></svg></button><div id="cnt"></div></div></header>
+<main id="ui"></main>
+<aside id="sp" class="chrome"><div class="sh"><span><b>SCRIPT</b> • <i id="spn"></i></span><button id="spx" aria-label="Close">✕</button></div><div id="spb"></div></aside>
+<footer class="bot chrome"><div class="lf"><button class="btn" id="pv">◀ Prev</button><button class="btn n" id="nx">Next ▶</button></div><div class="trk"><div id="bar"></div></div><div class="kh"><kbd>←</kbd><kbd>→</kbd> Navigate <kbd>F</kbd> Full</div></footer>
 <script>
-const IM=["images/montana.jpg", "images/atacama.jpg", "images/fabrica.jpg", "images/ropa.jpg", "images/marcas.jpg", "images/costurera.jpg", "images/compras.jpg"];
-// i=image, z=[zoom,cx,cy]
+const BG="images/montana.jpg";
 const VIDEO='wmSiXKxQw30'; // cambia solo este ID para usar otro video de YouTube
+// hd: *rojo* = palabra resaltada, | = salto de línea · chips: "!" al inicio = chip rojo · z = cámara del fondo
+// lay: L = texto a la izquierda y foto a la derecha · R = foto a la izquierda y texto a la derecha · big = jerarquía de tamaños
+const SC={
+intro:`## 1. Introduction – What are we really buying?
+Hi, everyone!
+Let me start with a simple question: How many clothes do you have in your closet that you never wear?
+Maybe you bought them because they were on sale, because they were trendy, or because you saw them on TikTok.
+And that's okay. We all like buying new clothes. Sometimes we just want to look good, try a new style, or feel different.
+But have you ever stopped to think about what happens before those clothes arrive at your home?
+Today, I want to talk about Fast Fashion and how our way of buying clothes affects the planet and the people who make them.
+Because, at the end of the day, a cheap T-shirt may have a much bigger cost than we think.`,
+ff1:`## 2. What is Fast Fashion?
+First things first, what does Fast Fashion mean?
+Fast Fashion is a way of making and selling clothes very quickly and at low prices.
+Companies bring out new clothes all the time. They follow trends, copy popular styles, and try to sell as much as possible.
+For example, you can open an app like SHEIN and find hundreds of new clothes every day.`,
+ff2:`## 2. What is Fast Fashion? (cont.)
+And here's the thing: trends come and go very quickly. One week, something is popular. The next week, nobody wants it anymore.
+So, people keep buying more and more clothes, but they don't always wear them for a long time.
+In other words, clothes are made to be bought quickly, used for a short time, and then thrown away.
+This leads to a big problem: overproduction. That means companies make more clothes than people really need.
+And let's face it, we don't need a new outfit every single week!`,
+labour:`## 3. The people behind our clothes
+But there's another side of Fast Fashion that we don't always see.
+Before a T-shirt gets to a store or to our homes, someone has to make it.
+Many workers in the clothing industry work long hours and get very low pay. In some places, they even face unsafe conditions.
+And sadly, child labour is still a problem.
+For example, in 2024, SHEIN reported that it found two cases of child labour among its suppliers. One of the children was only 11 years old.
+This doesn't mean that every person who works with SHEIN is a child, but it shows that serious problems can happen inside these supply chains.
+And here's the million-dollar question:
+Who pays the real price for our cheap clothes?
+Because sometimes, while we save money, other people have to work in very difficult conditions.
+And that's not fair, is it?`,
+env:`## 4. The environmental impact
+Now, let's talk about the planet.
+Making clothes takes a lot of water, energy, and other resources.
+For example, making one pair of jeans can use around 7,500 litres of water. That's a lot of water for just one pair of jeans!
+Also, factories use chemicals to make clothes in different colours. Some of these chemicals can pollute rivers and affect people, animals, and nature.
+On top of that, making and moving clothes around the world creates pollution.
+And what happens when we don't want those clothes anymore?
+A lot of them end up in the trash. Some are burned, and others are left in places where they can damage the environment.
+We often hear people talk about the environmental impact of AI and data centres. And yes, that's a big issue too.
+But here's what I find interesting: we talk a lot about new technology, but sometimes we forget about industries like fashion, which have been affecting the planet for years.
+Don't get me wrong, AI's impact is important. But we shouldn't turn a blind eye to the problems caused by the fashion industry either.
+The point is not to say that one is worse than the other. The point is that we should talk about both.`,
+atacama:`## 5. The Atacama Desert – A mountain of clothes
+One of the clearest examples of this problem is in Chile, in the Atacama Desert.
+There are huge piles of unwanted clothes in this area. Some of these clothes come from other countries and arrive in Chile to be sold as second-hand clothing.
+But not everything can be sold or reused. So, a lot of it is left in the desert, and some of it is burned.
+Just think about that for a second.
+We buy clothes, wear them a few times, and forget about them. But they don't just disappear when we throw them away.
+They have to go somewhere.
+And in places like the Atacama Desert, we can see what happens when people and companies produce and throw away too much.
+It's important to point out that this waste doesn't come only from SHEIN. It's part of a much bigger problem with the clothing industry and the way we buy and throw away clothes.`,
+resp:`## 6. Who is really responsible?
+Now, I want to talk about something important.
+I don't think we should point fingers at people just because they buy cheap clothes.
+Not everyone has enough money to buy expensive brands. Sometimes, affordable clothes are the only option.
+And let's be honest: a high price doesn't always mean that a product is ethical or good for the planet.
+Sometimes, we're also paying for the brand, the name, the marketing, or the design.
+So, the problem isn't simply that people want to buy affordable clothes.
+The bigger problem is a system where companies make too many clothes, follow every trend, and encourage people to keep buying.
+Companies have a big responsibility because they decide how many clothes they make, where they make them, and who works in their factories.
+Governments also need to step up and create rules to protect workers and the environment.
+Of course, we can make better choices as consumers. But let's not forget that we can't fix the whole problem on our own.`,
+sol:`## 7. What can we do?
+So, what can we do?
+First, we can think twice before buying something. Do we really need it, or do we just want it because it's trendy?
+Second, we can take care of the clothes we already have. We can reuse them, fix them, or give them to someone else.
+We can also look for second-hand clothes when possible.
+And finally, we can speak up and ask companies to be more responsible and honest about how they make their clothes.
+These actions may seem small, but every little bit helps.
+After all, change doesn't happen overnight.`,
+concl:`## Conclusion
+To wrap things up, I want you to remember one thing:
+Fast Fashion is not just about clothes. It's also about workers, pollution, waste, and the future of our planet.
+We don't need to stop buying clothes completely. We just need to understand what goes on behind the things we buy.
+Because every time we buy something, there's a story behind it.
+And maybe it's time to hit the brakes, think twice, and stop following every single trend.
+At the end of the day, the planet is our home, and we don't have a backup!
+Thank you for listening!`
+};
 const S=[
-{t:"Our ever-expanding consumerism has killed the earth",i:0,z:[1,.5,.5]},
-{h:"What are we really buying?",k:["Consumerism","Shopping habits","TikTok trends","Unused clothes","Hidden costs"],i:6,z:[1,.5,.5]},
-{h:"The business behind the trends",k:["Cheap clothes","Mass production","Fast trends","SHEIN","Overproduction","Short-lived fashion"],i:2,z:[1,.5,.5]},
-{h:"The people behind our clothes",k:["Factory workers","Low wages","Long hours","Unsafe conditions","Child labour","SHEIN: 2 cases (2024)"],i:5,z:[1,.5,.5]},
-{h:"The planet pays the price",k:["Water consumption","<b>7,500</b> litres – Jeans","Chemical pollution","Energy use","CO₂ emissions","Textile waste","AI vs. Fashion"],i:3,z:[1,.5,.5]},
-{h:"A mountain of clothes",k:["Chile","Second-hand clothes","Textile mountains","Unwanted clothing","Burning waste","Environmental damage"],i:1,z:[1,.5,.5]},
-{v:VIDEO,i:0,z:[2.2,.5,.5]},
-{h:"Who is really responsible?",k:["Affordable clothing","Expensive ≠ ethical","Consumer choices","Company responsibility","Overproduction","Government regulations"],i:4,z:[1,.5,.5]},
-{h:"Small actions, big changes",k:["Think twice","Reuse","Repair","Donate","Second-hand shopping","Responsible companies"],i:3,z:[1.7,.7,.66]},
-{h:"The future is in our hands",k:["People","Planet","Responsibility","Less waste","Better choices","Think before buying"],i:0,z:[1,.5,.5]}
+{eb:"ENGLISH B2 • ORAL PRESENTATION",hd:"OUR EVER-EXPANDING|*CONSUMERISM*|HAS KILLED THE EARTH",cv:1,sub:"THE HIDDEN COST OF FAST FASHION",chips:["MASS PRODUCTION","LABOUR EXPLOITATION","ENVIRONMENTAL DAMAGE"],z:[1,.5,.5]},
+{eb:"WATCH • FAST FASHION",hd:"SEE THE *REAL COST*",v:VIDEO,z:[1.1,.5,.6]},
+{eb:"01 • INTRODUCTION",hd:"WHAT ARE WE *REALLY BUYING?*",big:1,lay:"L",chips:["CONSUMERISM","SHOPPING HABITS","!TIKTOK TRENDS","!UNUSED CLOTHES","HIDDEN COSTS"],img:"compras",sc:SC.intro,z:[1.25,.4,.68]},
+{eb:"02 • FAST FASHION",hd:"THE BUSINESS BEHIND *THE TRENDS*",big:1,lay:"R",chips:["CHEAP CLOTHES","!MASS PRODUCTION","FAST TRENDS","SHEIN","!OVERPRODUCTION","SHORT-LIVED FASHION"],img:"fabrica",sc:SC.ff1+"\n"+SC.ff2.replace(/^## .*\n/,''),z:[1.3,.62,.7]},
+{eb:"03 • LABOUR EXPLOITATION",hd:"THE PEOPLE BEHIND *OUR CLOTHES*",big:1,lay:"L",stat:{n:"2",u:"CASES • SHEIN (2024)",r:1},chips:["FACTORY WORKERS","!LOW WAGES","!LONG HOURS","UNSAFE CONDITIONS","CHILD LABOUR"],img:"costurera",sc:SC.labour,z:[1.25,.38,.72]},
+{eb:"04 • ENVIRONMENTAL IMPACT",hd:"THE PLANET *PAYS THE PRICE*",big:1,lay:"R",stat:{n:"7,500",u:"LITRES – JEANS"},chips:["!WATER CONSUMPTION","CHEMICAL POLLUTION","ENERGY USE","!CO₂ EMISSIONS","TEXTILE WASTE","AI VS. FASHION"],img:"ropa",sc:SC.env,z:[1.3,.6,.66]},
+{eb:"05 • ATACAMA DESERT",hd:"A MOUNTAIN *OF CLOTHES*",big:1,lay:"L",chips:["CHILE","SECOND-HAND CLOTHES","!TEXTILE MOUNTAINS","UNWANTED CLOTHING","!BURNING WASTE","ENVIRONMENTAL DAMAGE"],img:"atacama",sc:SC.atacama,z:[1.2,.45,.7]},
+{eb:"06 • RESPONSIBILITY",hd:"WHO IS *REALLY RESPONSIBLE?*",big:1,lay:"R",chips:["AFFORDABLE CLOTHING","!EXPENSIVE ≠ ETHICAL","CONSUMER CHOICES","!COMPANY RESPONSIBILITY","OVERPRODUCTION","GOVERNMENT REGULATIONS"],img:"marcas",sc:SC.resp,z:[1.3,.55,.7]},
+{eb:"07 • SOLUTIONS",hd:"SMALL ACTIONS, *BIG CHANGES*",cv:1,chips:["THINK TWICE","!REUSE","!REPAIR","DONATE","SECOND-HAND SHOPPING","RESPONSIBLE COMPANIES"],sc:SC.sol,z:[1.1,.5,.55]},
+{eb:"08 • CONCLUSION",hd:"THE FUTURE IS *IN OUR HANDS*",cv:1,chips:["PEOPLE","PLANET","!RESPONSIBILITY","LESS WASTE","!BETTER CHOICES","THINK BEFORE BUYING"],sc:SC.concl,z:[1,.5,.5]}
 ];
-// per image: mode, y0, amp, flicker, hole[x,y,rx,ry]
-const D={fit:0,pc:.5,e1:[0,0,.001,.001],e2:[0,0,.001,.001]};
-const P=[
-{m:0,y:0,a:1,f:0,h:[.503,.87,.025,.11]},
-{m:1,y:.3,a:1,f:0,h:[.72,.19,.09,.09]},
-{m:1,y:.62,a:.5,f:1,h:[0,0,.001,.001]},
-{m:1,y:.4,a:1,f:0,h:[.7,.68,.13,.22]},
-{m:2,y:0,a:1.3,f:0,h:[0,0,.001,.001],fit:1,pc:.68,e1:[.43,.36,.15,.17],e2:[.68,.53,.1,.1]},
-{m:2,y:0,a:.9,f:0,h:[0,0,.001,.001],fit:1,pc:.7,e1:[.6,.78,.1,.17],e2:[.2,.4,.09,.15]},
-{m:1,y:.58,a:1,f:0,h:[.5,.5,.1,.14],fit:1,pc:.7}
-].map(o=>({...D,...o}));
-const ui=document.getElementById('ui'),cnt=document.getElementById('cnt'),bar=document.getElementById('bar');
-const words=t=>t.split(' ').map((w,j)=>`<span class="w"><i style="--j:${j}">${w}</i></span>`).join(' ');
-const pad=n=>String(n).padStart(2,'0');
+const imgSrc=k=>(window.IM&&IM[k])||`images/${k}.jpg`;
+S.forEach(s=>{if(s.img)new Image().src=imgSrc(s.img);});
+const ui=document.getElementById('ui'),cnt=document.getElementById('cnt'),bar=document.getElementById('bar'),pv=document.getElementById('pv'),nx=document.getElementById('nx');
+const hd=s=>{let j=0;return s.split('|').map(l=>l.split('*').map((g,si)=>g.split(' ').map(w=>w?`<span class="w${si%2?' a':''}"><i style="--j:${j++}">${w}</i></span>`:'').join(' ')).join('')).join('<br>');};
+const vid=d=>`<section class="vd"><div class="tx"><div class="eb">${d.eb}</div><h2 class="hd vh">${hd(d.hd)}</h2></div><div class="fr"><iframe src="https://www.youtube-nocookie.com/embed/${d.v}?autoplay=1&rel=0&playsinline=1" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen title="Video"></iframe></div></section>`;
 let idx=0,tr=null;
-const vid=id=>`<section class="vd"><div class="fr"><iframe src="https://www.youtube-nocookie.com/embed/${id}?autoplay=1&rel=0&playsinline=1" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen title="Video"></iframe></div></section><button class="nv p" aria-label="Previous">‹</button><button class="nv n" aria-label="Next">›</button>`;
-ui.addEventListener('click',e=>{const b=e.target.closest('.nv');if(b){e.stopPropagation();go(idx+(b.classList.contains('n')?1:-1));}else if(e.target.closest('.fr'))e.stopPropagation();});
+ui.addEventListener('click',e=>{if(e.target.closest('.fr'))e.stopPropagation();});
 function render(){const d=S[idx];document.body.classList.toggle('vid',!!d.v);
- ui.innerHTML=d.v?vid(d.v):d.t?`<section class="cv"><h1>${words(d.t)}</h1></section>`:`<section><h2>${words(d.h)}</h2><ul>${d.k.map((x,i)=>`<li style="--i:${i}">${x}</li>`).join('')}</ul></section>`;
- cnt.textContent=pad(idx+1)+' / '+pad(S.length);bar.style.width=(idx/(S.length-1)*100)+'%';}
+ if(d.v)ui.innerHTML=vid(d);else{
+  const flow=d.flow?`<div class="flow">${d.flow.map((x,i)=>`<div class="fb${i==d.flow.length-1?' l':''}"><small>0${i+1}</small><b>${x}</b></div>${i<d.flow.length-1?'<span class="ar">→</span>':''}`).join('')}</div>`:'';
+  const stat=d.stat?`<div class="stat"><b${d.stat.r?' class="r"':''}>${d.stat.n}</b><span>${d.stat.u}</span></div>`:'';
+  const vs=d.vs?`<div class="vs">${d.vs.map(c=>`<div class="vc" style="--c:${c.c}"><small>${c.l}</small><h3>${c.t}</h3><em>${c.p}</em></div>`).join('<span class="vv">VS</span>')}</div>`:'';
+  const chips=d.chips?`<div class="chips">${d.chips.map((c,i)=>`<span class="chip${c[0]=='!'?' r':''}" style="--i:${i}">${c.replace('!','')}</span>`).join('')}</div>`:'';
+  const H=d.cv?'h1':'h2';
+  const tx=`<div class="tx"><div class="eb">${d.eb}</div><${H} class="hd${d.cv?' cv':''}${d.big?' big':''}">${hd(d.hd)}</${H}>${d.sub?`<i class="ln"></i><div class="sub">${d.sub}</div>`:''}${stat}${flow}${vs}${chips}</div>`;
+  ui.innerHTML=`<section class="${d.img?(d.lay||'L'):'solo'}">${tx}${d.img?`<div class="cw"><figure class="card"><img src="${imgSrc(d.img)}" alt=""></figure></div>`:''}</section>`;}
+ upd();cnt.innerHTML=`<b>${idx+1}</b><s>/</s>${S.length}`;bar.style.width=((idx+1)/S.length*100)+'%';pv.disabled=idx==0;nx.disabled=idx==S.length-1;}
+
+const sp=document.getElementById('sp'),spb=document.getElementById('spb'),spn=document.getElementById('spn'),sbt=document.getElementById('sbt');
+const esc=t=>t.replace(/&/g,'&amp;').replace(/</g,'&lt;');
+function upd(){const d=S[idx];spn.textContent=`SLIDE ${idx+1}`;spb.scrollTop=0;
+ spb.innerHTML=d.sc?d.sc.split('\n').map(l=>l.startsWith('## ')?`<h4>${esc(l.slice(3))}</h4>`:`<p>${esc(l)}</p>`).join(''):'<p class="em">Esta diapositiva no tiene guion en tu diálogo.</p>';}
+const tgl=()=>{sp.classList.toggle('on');document.body.classList.toggle('spo',sp.classList.contains('on'));sbt.classList.toggle('on',sp.classList.contains('on'));};
+sbt.onclick=tgl;document.getElementById('spx').onclick=tgl;
+addEventListener('keydown',e=>{if(e.key=='s'||e.key=='S')tgl();});
+pv.onclick=()=>go(idx-1);nx.onclick=()=>go(idx+1);
+document.getElementById('fs').onclick=()=>document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen&&document.documentElement.requestFullscreen();
 function go(n){n=Math.max(0,Math.min(S.length-1,n));if(n===idx||tr)return;tr={t0:performance.now(),n,sw:0};ui.classList.add('out');}
 addEventListener('keydown',e=>{if(['ArrowRight',' ','PageDown','Enter'].includes(e.key))go(idx+1);else if(['ArrowLeft','PageUp','Backspace'].includes(e.key))go(idx-1);else if(e.key=='Home')go(0);else if(e.key=='End')go(S.length-1);else if(e.key=='f')document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen&&document.documentElement.requestFullscreen();});
-addEventListener('click',e=>go(idx+(e.clientX>innerWidth*.3?1:-1)));
+addEventListener('click',e=>{if(e.target.closest('.chrome'))return;go(idx+(e.clientX>innerWidth*.3?1:-1));});
 let sx=0;addEventListener('touchstart',e=>{sx=e.touches[0].clientX},{passive:true});
 addEventListener('touchend',e=>{const d=e.changedTouches[0].clientX-sx;if(Math.abs(d)>50)go(idx+(d<0?1:-1));});
 const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
 const VS=`attribute vec2 p;varying vec2 sc;void main(){sc=vec2(p.x*.5+.5,.5-p.y*.5);gl_Position=vec4(p,0.,1.);}`;
 const FS=`precision highp float;varying vec2 sc;
-uniform sampler2D uTex;uniform float uT,uA,uMode,uY0,uAmp,uFl,uGl,uFit,uPc;uniform vec2 uRes;uniform vec3 uZ;uniform vec4 uH,uE1,uE2;
+uniform sampler2D uTex;uniform float uT,uA,uGl;uniform vec2 uRes;uniform vec3 uZ;
 float h(vec2 p){return fract(sin(dot(p,vec2(127.1,311.7)))*43758.5453);}
 float n(vec2 p){vec2 i=floor(p),f=fract(p);f=f*f*(3.-2.*f);return mix(mix(h(i),h(i+vec2(1,0)),f.x),mix(h(i+vec2(0,1)),h(i+vec2(1,1)),f.x),f.y);}
 float fbm(vec2 p){float v=0.,a=.5;for(int i=0;i<3;i++){v+=a*n(p);p*=2.03;a*=.5;}return v/.875;}
 void main(){
- float ra=uRes.x/uRes.y;vec2 s=vec2(1.);vec2 uv;
- if(uFit>.5&&ra>uA){s.x=ra/uA;uv=vec2((sc.x-uPc)*s.x+.5,sc.y);}
- else{if(ra>uA)s.y=uA/ra;else s.x=ra/uA;uv=(sc-.5)*s+.5;}
- float ob=(uFit>.5&&ra>uA)?step(.5,abs(uv.x-.5)):0.;
+ float ra=uRes.x/uRes.y;vec2 s=vec2(1.);if(ra>uA)s.y=uA/ra;else s.x=ra/uA;
+ vec2 uv=(sc-.5)*s+.5;
  float z=uZ.x*(1.+.02*sin(uT*.2));uv=(uv-uZ.yz)/z+uZ.yz;
  uv.x+=(h(vec2(floor(uv.y*26.),floor(uT*20.)))-.5)*uGl*.12;
- float m;
- if(uMode<.5){vec2 pp=(uv-vec2(.5,.76))/vec2(.36,.40);m=1.-smoothstep(.55,1.05,length(pp));m=max(m,smoothstep(.80,.93,uv.y)*.85);}
- else if(uMode<1.5)m=smoothstep(uY0,uY0+.2,uv.y);
- else m=max(1.-smoothstep(.5,1.,length((uv-uE1.xy)/uE1.zw)),1.-smoothstep(.5,1.,length((uv-uE2.xy)/uE2.zw)));
- m*=1.-.92*(1.-smoothstep(.6,1.2,length((uv-uH.xy)/uH.zw)));
+ vec2 pp=(uv-vec2(.5,.76))/vec2(.36,.40);
+ float m=1.-smoothstep(.55,1.05,length(pp));m=max(m,smoothstep(.80,.93,uv.y)*.85);
+ m*=1.-.92*(1.-smoothstep(.6,1.2,length((uv-vec2(.503,.87))/vec2(.025,.11))));
  float t=uT;float gust=.7+.3*sin(t*.55+uv.x*2.5)+.2*sin(t*1.3);
  vec2 q=uv*vec2(8.,11.);
  float n1=fbm(q+vec2(-t*.6,t*.12));float n2=fbm(q*1.7+vec2(-t*.9+31.,-t*.2));
- vec2 d=vec2(n1-.5,(n2-.5)*.55)*.032*gust*m*uAmp;
- d.x+=sin(uv.y*60.+t*3.+n1*6.)*.0013*m*gust*uAmp;
- d.x+=(fbm(uv*vec2(3.,6.)+vec2(-t*.15,0.))-.5)*.004*(1.-m)*(1.-smoothstep(.5,.68,uv.y))*(1.-uFl);
- vec2 us=uv+d;if(uFit>.5)us.x=1.-abs(mod(us.x,2.)-1.);vec3 c=texture2D(uTex,clamp(us,0.,1.)).rgb;c*=1.-.45*ob;
+ vec2 d=vec2(n1-.5,(n2-.5)*.55)*.032*gust*m;
+ d.x+=sin(uv.y*60.+t*3.+n1*6.)*.0013*m*gust;
+ d.x+=(fbm(uv*vec2(3.,6.)+vec2(-t*.15,0.))-.5)*.006*(1.-m)*(1.-smoothstep(.5,.68,uv.y));
+ vec3 c=texture2D(uTex,clamp(uv+d,0.,1.)).rgb;
  c*=1.+(n1-.5)*.4*m;
- c*=1.+uFl*step(uv.y,.16)*.35*(h(vec2(floor(t*9.),floor(uv.x*8.)))-.5);
  c*=1.-uGl*.4;
  c*=1.-.9*dot(sc-.5,sc-.5);
  c+=(h(sc*uRes+floor(t*14.))-.5)*.06;
  gl_FragColor=vec4(c,1.);}`;
-Promise.all(IM.map(u=>new Promise(r=>{const i=new Image();i.onload=()=>r(i);i.src=u;}))).then(imgs=>{
+const bgi=new Image();bgi.onload=()=>{
  const gl=document.getElementById('gl'),fx=document.getElementById('fx'),ctx=fx.getContext('2d');
  const g=gl.getContext('webgl');render();if(!g)return;
  const sh=(t,s)=>{const o=g.createShader(t);g.shaderSource(o,s);g.compileShader(o);return o;};
  const pr=g.createProgram();g.attachShader(pr,sh(g.VERTEX_SHADER,VS));g.attachShader(pr,sh(g.FRAGMENT_SHADER,FS));g.linkProgram(pr);g.useProgram(pr);
  g.bindBuffer(g.ARRAY_BUFFER,g.createBuffer());g.bufferData(g.ARRAY_BUFFER,new Float32Array([-1,-1,1,-1,-1,1,1,1]),g.STATIC_DRAW);
  const lc=g.getAttribLocation(pr,'p');g.enableVertexAttribArray(lc);g.vertexAttribPointer(lc,2,g.FLOAT,false,0,0);
- const tex=imgs.map(im=>{const t=g.createTexture();g.bindTexture(g.TEXTURE_2D,t);g.texImage2D(g.TEXTURE_2D,0,g.RGB,g.RGB,g.UNSIGNED_BYTE,im);
-  [[g.TEXTURE_MIN_FILTER,g.LINEAR],[g.TEXTURE_MAG_FILTER,g.LINEAR],[g.TEXTURE_WRAP_S,g.CLAMP_TO_EDGE],[g.TEXTURE_WRAP_T,g.CLAMP_TO_EDGE]].forEach(a=>g.texParameteri(g.TEXTURE_2D,a[0],a[1]));return t;});
- const U=k=>g.getUniformLocation(pr,k);
+ const tx=g.createTexture();g.bindTexture(g.TEXTURE_2D,tx);g.texImage2D(g.TEXTURE_2D,0,g.RGB,g.RGB,g.UNSIGNED_BYTE,bgi);
+ [[g.TEXTURE_MIN_FILTER,g.LINEAR],[g.TEXTURE_MAG_FILTER,g.LINEAR],[g.TEXTURE_WRAP_S,g.CLAMP_TO_EDGE],[g.TEXTURE_WRAP_T,g.CLAMP_TO_EDGE]].forEach(a=>g.texParameteri(g.TEXTURE_2D,a[0],a[1]));
+ const U=k=>g.getUniformLocation(pr,k);g.uniform1f(U('uA'),bgi.width/bgi.height);
  let W,H;function size(){const r=Math.min(devicePixelRatio||1,2);W=innerWidth;H=innerHeight;gl.width=fx.width=Math.round(W*r);gl.height=fx.height=Math.round(H*r);g.viewport(0,0,gl.width,gl.height);g.uniform2f(U('uRes'),gl.width,gl.height);ctx.setTransform(r,0,0,r,0,0);}
  addEventListener('resize',size);size();
  const cols=['#14172b','#1d2a3c','#e9d9d6','#f4b9bf','#8d1228','#ff4a63'];
  const fl=Array.from({length:reduce?0:60},()=>({x:Math.random(),y:.2+Math.random()*.75,v:.03+Math.random()*.09,s:2+Math.random()*4,p:Math.random()*9,r:Math.random()*6,c:cols[Math.random()*6|0]}));
- let last=performance.now();
+ let last=performance.now(),cz=S[0].z.slice();
  function frame(now){
   const dt=Math.min((now-last)/1000,.05);last=now;const t=reduce?3:now/1000;
   let gG=0;
   if(tr){const p=(now-tr.t0)/900;if(p<.35)gG=p/.35;else{if(!tr.sw){tr.sw=1;idx=tr.n;render();ui.classList.remove('out');}gG=Math.max(0,1-(p-.35)/.65);}if(p>=1)tr=null;}
-  const d=S[idx],q=P[d.i];
-  g.bindTexture(g.TEXTURE_2D,tex[d.i]);
-  g.uniform1f(U('uT'),t);g.uniform1f(U('uA'),imgs[d.i].width/imgs[d.i].height);g.uniform1f(U('uMode'),q.m);g.uniform1f(U('uY0'),q.y);
-  g.uniform1f(U('uAmp'),q.a);g.uniform1f(U('uFl'),q.f);g.uniform1f(U('uGl'),gG);g.uniform3f(U('uZ'),d.z[0],d.z[1],d.z[2]);g.uniform4f(U('uH'),q.h[0],q.h[1],q.h[2],q.h[3]);g.uniform1f(U('uFit'),q.fit);g.uniform1f(U('uPc'),q.pc);g.uniform4f(U('uE1'),q.e1[0],q.e1[1],q.e1[2],q.e1[3]);g.uniform4f(U('uE2'),q.e2[0],q.e2[1],q.e2[2],q.e2[3]);
+  const k=Math.min(1,dt*2.2),tg=S[idx].z;for(let i=0;i<3;i++)cz[i]+=(tg[i]-cz[i])*k;
+  g.uniform1f(U('uT'),t);g.uniform1f(U('uGl'),gG);g.uniform3f(U('uZ'),cz[0],cz[1],cz[2]);
   g.drawArrays(g.TRIANGLE_STRIP,0,4);
   ctx.clearRect(0,0,W,H);const gu=.8+.4*Math.sin(t*.55);
   for(const f of fl){f.x+=f.v*gu*dt;f.p+=dt;f.r+=dt*(1+f.v*8);if(f.x>1.05){f.x=-.05;f.y=.2+Math.random()*.75;}
    ctx.fillStyle=f.c;ctx.beginPath();ctx.ellipse(f.x*W,(f.y+Math.sin(f.p*1.3+f.x*6)*.03)*H,f.s*1.8,f.s*.7*Math.abs(Math.cos(f.r))+.4,f.r,0,6.283);ctx.fill();}
   requestAnimationFrame(frame);}
  requestAnimationFrame(frame);
-});
+};
+bgi.src=BG;
 </script></body></html>
